@@ -14,8 +14,8 @@ Flows={}
 line_count = 0; total_lines = 0
 MaxId = 0; cant_packet = 0; arrivalTime = 0; elapsed = 0
 file_trace_now = ''
-dirname_traces = './AppEscalable/Traces'
-dirname_results = './AppEscalable/Results'
+dirname_traces = '../AppEscalable/Traces'
+dirname_results = '../AppEscalable/Results'
 
 #Cargamos el diccionario
 start_dict = time.clock()
