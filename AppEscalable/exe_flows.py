@@ -188,12 +188,11 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 		save_dict = csv.writer(open('./Dicts/dict.csv', 'w'))
 		save_val_ini_dict = csv.writer(open('./Dicts/val_ini.csv', 'w'))
 		#CantFlows, cant_packet, arrivalTime, time_present, time_execution_trace, time_execution_save_dicts, directory(n,m), trace_name
-		save_val_ini_dict.writerow([len(Flows), cant_packet, arrivalTime, time_present, elapsed, elapsed2, n, m, str(file_trace_now)])	
-		
 		start2=time.clock()
 		for val in Flows.items():
 			save_dict.writerow([val[0], val[1][0], val[1][1], val[1][2]])
 		elapsed2 = time.clock() - start2
+		save_val_ini_dict.writerow([len(Flows), cant_packet, arrivalTime, time_present, elapsed, elapsed2, n, m, str(file_trace_now)])	
 		print "tiempo que se guarda el dict %s" %(elapsed2)
 		
 
