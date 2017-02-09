@@ -3,7 +3,7 @@ import os
 import sys
 file = open(sys.argv[1], 'rb')
 ids = csv.reader(file)
-dirname_results = './AppEscalable/Results'
+dirname_results = '../AppEscalable/Results'
 #Las funciones que se utilizaran
 def calcular_parametros_directorio(id):
         #m_max: max directory, n_max: max sub_directory, p_max: max files per directory
