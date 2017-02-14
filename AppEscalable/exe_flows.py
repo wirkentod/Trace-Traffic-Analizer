@@ -111,8 +111,18 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 								capa4_tcp = str(tcp_packet).split(";")
 								port_src = capa4_tcp[0]
 								port_dst = capa4_tcp[1]
-								bit_SYN = capa4_tcp[2]
-								bit_FIN = capa4_tcp[3]
+								seqnum_tcp = capa4_tcp[2]
+								acknum_tcp = capa4_tcp[3]
+								data_offset_tcp = capa4_tcp[4]
+								bit_urg = capa4_tcp[5]
+								bit_ack = capa4_tcp[6]
+								bit_psh = capa4_tcp[7]
+								bit_rst = capa4_tcp[8]
+								bit_syn = capa4_tcp[9]
+								bit_fin = capa4_tcp[10]
+								win_tcp = capa4_tcp[11]
+								sum_tcp = capa4_tcp[12]
+								opt_tcp = capa4_tcp[13]
 							except:
 								port_src = '0'
 								port_dst = '0'
@@ -124,6 +134,8 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 								capa4_udp = str(udp_packet).split(";")
 								port_src = capa4_udp[0]
 								port_dst = capa4_udp[1]
+								len_udp = capa4_udp[2]
+								sum_udp = capa4_udp[3]
 							except:
 								port_src = '0'
 								port_dst = '0'
@@ -164,11 +176,18 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 						[n,m] = calcular_parametros_directorio(old_value_flow[0])
 						dir_flow_pkt = dirname_results+'/Flow_'+str(m)+'/Flow_'+str(m)+'_'+str(n)
 						file_pkt = open(dir_flow_pkt+'/flow_value_'+str(old_value_flow[0])+'.csv', 'a')
-						#Para los bits SYN y FIN si solo son TCP
+						#Se escribe el header de cada paquete
 						if (int(protocolo) == 6):
-							file_pkt.write(str(arrivalTime) + ',' + str(tamanho) + ',' + str(temp_FLAG_UP_DW)  + ',' + str(bit_SYN) + ',' + str(bit_FIN) + '\n')
+							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' 
+							+ str(tamanho) + ',' + str(temp_FLAG_UP_DW)  + ',' 
+							+ str(seqnum_tcp) + ',' + str(acknum_tcp) + ',' + str(data_offset_tcp) + ',' + str(bit_urg) + ',' + str(bit_ack) + ',' 
+							+ str(bit_psh) + ',' + str(bit_rst) + ',' + str(bit_syn) + ',' + str(bit_fin) + ',' + str(win_tcp) + ',' 
+							+ str(sum_tcp) + ',' + str(opt_tcp) + '\n')
+						elif (int(protocolo) == 17):
+							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' + str(tamanho) + ',' 
+							+ str(temp_FLAG_UP_DW)  + ',' + str(len_udp) + ',' + str(sum_udp) + '\n')
 						else:
-							file_pkt.write(str(arrivalTime) + ',' + str(tamanho) + ',' + str(temp_FLAG_UP_DW)  + '\n')
+							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' + str(tamanho) + ',' + str(temp_FLAG_UP_DW)  + '\n')
 						Flows[str(temp_key)] = old_value_flow
 					except AssertionError:
 						#No se analiza el paquete porque no es IPv4
