@@ -114,15 +114,16 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 								seqnum_tcp = capa4_tcp[2]
 								acknum_tcp = capa4_tcp[3]
 								data_offset_tcp = capa4_tcp[4]
-								bit_urg = capa4_tcp[5]
-								bit_ack = capa4_tcp[6]
-								bit_psh = capa4_tcp[7]
-								bit_rst = capa4_tcp[8]
-								bit_syn = capa4_tcp[9]
-								bit_fin = capa4_tcp[10]
-								win_tcp = capa4_tcp[11]
-								sum_tcp = capa4_tcp[12]
-								opt_tcp = capa4_tcp[13]
+								flags_tcp = capa4_tcp[5]
+								bit_urg = capa4_tcp[6]
+								bit_ack = capa4_tcp[7]
+								bit_psh = capa4_tcp[8]
+								bit_rst = capa4_tcp[9]
+								bit_syn = capa4_tcp[10]
+								bit_fin = capa4_tcp[11]
+								win_tcp = capa4_tcp[12]
+								sum_tcp = capa4_tcp[13]
+								opt_tcp = capa4_tcp[14]
 							except:
 								port_src = '0'
 								port_dst = '0'
@@ -180,7 +181,7 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 						if (int(protocolo) == 6):
 							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' 
 							+ str(tamanho) + ',' + str(temp_FLAG_UP_DW)  + ',' 
-							+ str(seqnum_tcp) + ',' + str(acknum_tcp) + ',' + str(data_offset_tcp) + ',' + str(bit_urg) + ',' + str(bit_ack) + ',' 
+							+ str(seqnum_tcp) + ',' + str(acknum_tcp) + ',' + str(data_offset_tcp) + ',' + flags_tcp + ',' + str(bit_urg) + ',' + str(bit_ack) + ',' 
 							+ str(bit_psh) + ',' + str(bit_rst) + ',' + str(bit_syn) + ',' + str(bit_fin) + ',' + str(win_tcp) + ',' 
 							+ str(sum_tcp) + ',' + str(opt_tcp) + '\n')
 						elif (int(protocolo) == 17):
