@@ -87,8 +87,8 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 						ip_src = capa3[0]
 						ip_dst = capa3[1]
 						protocolo = capa3[2]
-						#Se agrega 22 bytes pues se considera el header de la capa 2
-						tamanho = int(capa3[3])+22
+						ip_hl = capa3[3]
+						size_pkt = pkt.packet_len
 						#Capturamos los arrivalTimes de cada paquete
 						time_present = float(pkt.timestamp_us)*0.000001+float(pkt.timestamp)
 						
@@ -114,16 +114,13 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 								seqnum_tcp = capa4_tcp[2]
 								acknum_tcp = capa4_tcp[3]
 								data_offset_tcp = capa4_tcp[4]
-								flags_tcp = capa4_tcp[5]
-								bit_urg = capa4_tcp[6]
-								bit_ack = capa4_tcp[7]
-								bit_psh = capa4_tcp[8]
-								bit_rst = capa4_tcp[9]
-								bit_syn = capa4_tcp[10]
-								bit_fin = capa4_tcp[11]
-								win_tcp = capa4_tcp[12]
-								sum_tcp = capa4_tcp[13]
-								opt_tcp = capa4_tcp[14]
+								bit_urg = capa4_tcp[5]
+								bit_ack = capa4_tcp[6]
+								bit_psh = capa4_tcp[7]
+								bit_rst = capa4_tcp[8]
+								bit_syn = capa4_tcp[9]
+								bit_fin = capa4_tcp[10]
+								win_tcp = capa4_tcp[11]
 							except:
 								port_src = '0'
 								port_dst = '0'
@@ -134,9 +131,7 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 								#Extraemos los datos de la capa 4
 								capa4_udp = str(udp_packet).split(";")
 								port_src = capa4_udp[0]
-								port_dst = capa4_udp[1]
-								len_udp = capa4_udp[2]
-								sum_udp = capa4_udp[3]
+								port_dst = capa4_udp[1]	
 							except:
 								port_src = '0'
 								port_dst = '0'
@@ -171,7 +166,7 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 						old_value_flow = Flows[str(temp_key)]
 						#Actualizamos los valores del Flow
 						old_value_flow[1] += 1
-						old_value_flow[2] += tamanho
+						old_value_flow[2] += size_pkt
 						
 						#Guardamos los valores dinamicos del Flow
 						[n,m] = calcular_parametros_directorio(old_value_flow[0])
@@ -179,16 +174,13 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 						file_pkt = open(dir_flow_pkt+'/flow_value_'+str(old_value_flow[0])+'.csv', 'a')
 						#Se escribe el header de cada paquete
 						if (int(protocolo) == 6):
-							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' 
-							+ str(tamanho) + ',' + str(temp_FLAG_UP_DW)  + ',' 
-							+ str(seqnum_tcp) + ',' + str(acknum_tcp) + ',' + str(data_offset_tcp) + ',' + flags_tcp + ',' + str(bit_urg) + ',' + str(bit_ack) + ',' 
-							+ str(bit_psh) + ',' + str(bit_rst) + ',' + str(bit_syn) + ',' + str(bit_fin) + ',' + str(win_tcp) + ',' 
-							+ str(sum_tcp) + ',' + str(opt_tcp) + '\n')
-						elif (int(protocolo) == 17):
-							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' + str(tamanho) + ',' 
-							+ str(temp_FLAG_UP_DW)  + ',' + str(len_udp) + ',' + str(sum_udp) + '\n')
+							pkt_payload = size_pkt - (14 + 4*(int(ip_hl) + int(data_offset_tcp)))
+							print "paquete TCP %s: %s | %s | %s | %s " %(cant_packet , size_pkt, ip_hl, data_offset_tcp, pkt_payload )
+							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' + str(size_pkt) + ',' + str(temp_FLAG_UP_DW)  + ',' + str(pkt_payload) + ',' + str(seqnum_tcp) + ',' + str(acknum_tcp) + ',' + str(data_offset_tcp) + ',' + str(bit_urg) + ',' + str(bit_ack) + ',' + str(bit_psh) + ',' + str(bit_rst) + ',' + str(bit_syn) + ',' + str(bit_fin) + ',' + str(win_tcp) + '\n')
 						else:
-							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' + str(tamanho) + ',' + str(temp_FLAG_UP_DW)  + '\n')
+							pkt_payload = size_pkt - (14 + 4*int(ip_hl) + 8)
+							print "paquete  %s: %s | %s | %s  " %(cant_packet , size_pkt, ip_hl, pkt_payload )
+							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' + str(size_pkt) + ',' + str(temp_FLAG_UP_DW)  + ',' + str(pkt_payload) + '\n')
 						Flows[str(temp_key)] = old_value_flow
 					except AssertionError:
 						#No se analiza el paquete porque no es IPv4
