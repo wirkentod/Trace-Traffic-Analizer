@@ -179,8 +179,10 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 							file_pkt.write(val_ini[0] + ',' + val_ini[1] + ',' + val_ini[2] + ',' + val_ini[3] + ',' + val_ini[4] + '\n')
 							file_pkt.write('# Flow '+ str(old_value_flow[0]) + ' : ip_src | ip_dst | protocolo | src_port | dst_port' + '\n')
 							if (int(protocolo) == 6):
+								file_pkt.write('#|  1   |   2    |   3    |    4     |     5      |   6   |   7   |     8     | 9 | 10| 11| 12| 13| 14| 15|' + '\n')
 								file_pkt.write('#pkt_num,arr_time,pkt_size,flag_UP_DW,size_payload,seq_num,ack_num,data_offset,urg,ack,psh,rst,syn,fin,win' + '\n')
 							else:
+								file_pkt.write('#   1   |    2   |   3    |    4     |     5      |' + '\n')
 								file_pkt.write('#pkt_num,arr_time,pkt_size,flag_UP_DW,size_payload' + '\n')
 						
 						#Se escribe el header de cada paquete
