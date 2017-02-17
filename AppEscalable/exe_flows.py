@@ -172,14 +172,23 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 						[n,m] = calcular_parametros_directorio(old_value_flow[0])
 						dir_flow_pkt = dirname_results+'/Flow_'+str(m)+'/Flow_'+str(m)+'_'+str(n)
 						file_pkt = open(dir_flow_pkt+'/flow_value_'+str(old_value_flow[0])+'.csv', 'a')
+						
+						#Cabecera de cada file
+						if ( old_value_flow[1] == 1 ):
+							val_ini = str(temp_key).split('&')
+							file_pkt.write(val_ini[0] + ',' + val_ini[1] + ',' + val_ini[2] + ',' + val_ini[3] + ',' + val_ini[4] + '\n')
+							file_pkt.write('# Flow '+ str(old_value_flow[0]) + ' : ip_src | ip_dst | protocolo | src_port | dst_port' + '\n')
+							if (int(protocolo) == 6):
+								file_pkt.write('#pkt_num,arr_time,pkt_size,flag_UP_DW,size_payload,seq_num,ack_num,data_offset,urg,ack,psh,rst,syn,fin,win' + '\n')
+							else:
+								file_pkt.write('#pkt_num,arr_time,pkt_size,flag_UP_DW,size_payload' + '\n')
+						
 						#Se escribe el header de cada paquete
 						if (int(protocolo) == 6):
 							pkt_payload = size_pkt - (14 + 4*int(ip_hl) + int(data_offset_tcp))
-							print "paquete TCP %s: %s | %s | %s | %s " %(cant_packet , size_pkt, ip_hl, data_offset_tcp, pkt_payload )
 							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' + str(size_pkt) + ',' + str(temp_FLAG_UP_DW)  + ',' + str(pkt_payload) + ',' + str(seqnum_tcp) + ',' + str(acknum_tcp) + ',' + str(data_offset_tcp) + ',' + str(bit_urg) + ',' + str(bit_ack) + ',' + str(bit_psh) + ',' + str(bit_rst) + ',' + str(bit_syn) + ',' + str(bit_fin) + ',' + str(win_tcp) + '\n')
 						else:
 							pkt_payload = size_pkt - (14 + 4*int(ip_hl) + 8)
-							print "paquete  %s: %s | %s | %s  " %(cant_packet , size_pkt, ip_hl, pkt_payload )
 							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' + str(size_pkt) + ',' + str(temp_FLAG_UP_DW)  + ',' + str(pkt_payload) + '\n')
 						Flows[str(temp_key)] = old_value_flow
 					except AssertionError:
