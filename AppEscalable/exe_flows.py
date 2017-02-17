@@ -174,7 +174,7 @@ for dir_trace in sorted(os.listdir(dirname_traces)):
 						file_pkt = open(dir_flow_pkt+'/flow_value_'+str(old_value_flow[0])+'.csv', 'a')
 						#Se escribe el header de cada paquete
 						if (int(protocolo) == 6):
-							pkt_payload = size_pkt - (14 + 4*(int(ip_hl) + int(data_offset_tcp)))
+							pkt_payload = size_pkt - (14 + 4*int(ip_hl) + int(data_offset_tcp))
 							print "paquete TCP %s: %s | %s | %s | %s " %(cant_packet , size_pkt, ip_hl, data_offset_tcp, pkt_payload )
 							file_pkt.write(str(old_value_flow[1]) + ',' + str(arrivalTime) + ',' + str(size_pkt) + ',' + str(temp_FLAG_UP_DW)  + ',' + str(pkt_payload) + ',' + str(seqnum_tcp) + ',' + str(acknum_tcp) + ',' + str(data_offset_tcp) + ',' + str(bit_urg) + ',' + str(bit_ack) + ',' + str(bit_psh) + ',' + str(bit_rst) + ',' + str(bit_syn) + ',' + str(bit_fin) + ',' + str(win_tcp) + '\n')
 						else:
